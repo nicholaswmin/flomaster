@@ -1,0 +1,28 @@
+{
+  "name": "lizard",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "minimal, native syntax highlighting",
+  "exports": "./src/index.js",
+  "browser": "./src/index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicholaswmin/lizard.git"
+  },
+  "keywords": [
+    "syntax",
+    "highlighter",
+    "highlight-api",
+    "tokenizer",
+    "ast"
+  ],
+  "author": "Nicholas Kyriakides <nik.kyriakides@gmail.com> (https://github.io/nicholaswmin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nicholaswmin/lizard/issues"
+  },
+  "homepage": "https://github.com/nicholaswmin/lizard#readme"
+}
