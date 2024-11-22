@@ -1,8 +1,8 @@
 {
-  "name": "lizard",
+  "name": "flomaster",
   "version": "0.1.0",
   "type": "module",
-  "description": "minimal, native syntax highlighting",
+  "description": "fast, native syntax highlighter",
   "exports": "./src/index.js",
   "browser": "./src/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicholaswmin/lizard.git"
+    "url": "git+https://github.com/nicholaswmin/flomaster.git"
   },
   "keywords": [
     "syntax",
@@ -22,7 +22,7 @@
   "author": "Nicholas Kyriakides <nik.kyriakides@gmail.com> (https://github.io/nicholaswmin)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nicholaswmin/lizard/issues"
+    "url": "https://github.com/nicholaswmin/flomaster/issues"
   },
-  "homepage": "https://github.com/nicholaswmin/lizard#readme"
+  "homepage": "https://github.com/nicholaswmin/flomaster#readme"
 }

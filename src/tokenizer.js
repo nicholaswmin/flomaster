@@ -1,6 +1,7 @@
 // A generic tokenizer/scanner. 
 // Each language should extend with its own tokens.   
 // - Based on jsparse: ndesmic, MIT License
+
 import { styleText } from 'node:util'
 
 const END = Symbol('END')
