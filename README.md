@@ -3,7 +3,9 @@
 [![tests](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml/badge.svg)](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml)
 
 
+<a href="https://youtube.com/watch?v=JFvXvV0oZIo">
 <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon who used to star in those LG TV's sample videos you see in the malls. His real name is actually 'Alizavras' and he comes from Xylotympou, a nice village in Cyprus.'. Courtesy of icons8.com" width="72">
+</a>
 
 fast syntax highlighting [WIP]
 
