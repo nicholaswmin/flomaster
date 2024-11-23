@@ -19,11 +19,6 @@ delays. Additionally, it enlarges the DOM further exacerbating the issue.
 
 This prototype attempts an alternative method using position offsets,  
 so it (should) avoid these issues altogether. Simply put: it's *faster*.  
- 
-If these terms are new to you, it's normal, these are browser internals.   
-In this case it's best to visit the [Chromium project][bnk] first and get   
-accustomed on how browsers internally translate your source code into  
-actual pixels.
 
 
 ## todos
@@ -35,6 +30,7 @@ actual pixels.
           see notes in test.
 - [ ] a decent color mapper
 - [ ] add a small benchmark
+  - [ ] decide on the parameters *before* you start
 - [ ] review if it makes sense
 
 ## license
