@@ -1,22 +1,38 @@
 # flomaster
 
+<img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon who used to star in those LG TV's sample videos you see in the malls. His real name is actually 'Alizavras' and he comes from Xylotympou, a nice village in Cyprus.'. Courtesy of icons8.com" width="72">
+
 fast syntax highlighting [WIP]
 
 ## why
 
-Following [lexical tokenization][tok], the top 3 syntax highlighters  
-wrap each token in DOM elements to render them targetable via CSS;  
-a problematic mechanism that triggers [reflow][rfl][^1] in the main thread,      
-hence contributing to "jank" and [First-Meaningful Paint][fmp] delays.            
+While browser based syntax highlighters slightly differ,  
+they all follow the same fundamental process:  
+ 
+1. [Lexical Tokenization][tok] of raw source code
+2. Wrapping *each* token in a DOM element 
+3. CSS selection
+
+Step 2 is an awkward mechanism which triggers [layout reflow][rfl][^1] in   
+the main thread, hence contributing to "jank" and [First-Meaningful Paint][fmp]   
+delays. Additionally, it enlarges the DOM further exacerbating the issue.          
 
 This prototype attempts an alternative method using position offsets,  
-so it (should) avoid these issues altogether. Simply put: it's *faster*.
+so it (should) avoid these issues altogether. Simply put: it's *faster*.  
+ 
+If these terms are new to you, it's normal, these are browser internals.   
+In this case it's best to visit the [Chromium project][bnk] first and get   
+accustomed on how browsers internally translate your source code into  
+actual pixels.
+
 
 ## todos
 
-- [ ] get non-fancy [tokenizer][tok] to iterate upon:
-  - return shape: `[{ token: 'keyword', start: 5, end: 10 }]`
-  - add minimal tests
+- [x] get non-fancy [tokenizer][tok] to iterate upon:
+    - [x] return shape: `[{ token: 'keyword', start: 5, end: 10 }]`
+    - [x] add minimal tests
+    - [ ] the tokenizer falls over some regex,     
+          see notes in test.
 - [ ] a decent color mapper
 - [ ] add a small benchmark
 - [ ] review if it makes sense

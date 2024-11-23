@@ -1,6 +1,6 @@
-import { Tokenizer } from '../../tokenizer.js';
+import { Tokenizer } from '../../tokenizer/index.js';
 
-export default class ESTokenizer extends Tokenizer {
+class ESTokenizer extends Tokenizer {
   constructor() {
     super([
      	{ matcher: /[ \t]+/, type: null },
@@ -106,3 +106,5 @@ export default class ESTokenizer extends Tokenizer {
     ])
   }
 }
+
+export { ESTokenizer as Tokenizer }

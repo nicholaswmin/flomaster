@@ -31,8 +31,9 @@ const complex = `
         .concat(Object.getOwnPropertySymbols(source))
         .forEach((prop) => {
           // @REVIEW The following regex breaks the parser
-          // if (prop.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/))
-          //  return
+          // on the 15th character, 1st regex char.
+          if (prop.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/))
+          return
           Object.defineProperty(target, prop, Object.getOwnPropertyDescriptor(source, prop))
         })
     }

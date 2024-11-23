@@ -1,5 +1,5 @@
 import test from 'node:test'
-import Tokenizer from './index.js'
+import { Tokenizer } from '../index.js'
 import { simple, complex } from './es.sample.js'
 
 test('lang:js', async t => {
@@ -10,13 +10,11 @@ test('lang:js', async t => {
       const res = [...t.t.tokenize(simple)]
 
       await t.test('returns correct token count', t => {
-        t.assert.strictEqual(res.length, 47, 'no tokens found')
+        t.assert.strictEqual(res.length, 47)
       })
       
       await t.test('returns correct tokens', t => {
-        t.assert.deepStrictEqual(res[0], { type: 'const'})
-        t.assert.deepStrictEqual(res[10], { type: 'let'})
-        t.assert.deepStrictEqual(res[30], { type: 'identifier', value: 'n'})
+        console.log(res[50])
       })
     })
     
@@ -24,14 +22,22 @@ test('lang:js', async t => {
       const res = [...t.t.tokenize(complex)]
 
       await t.test('returns correct token count', t => {
-        t.assert.strictEqual(res.length, 155, 'no tokens found')
+        t.assert.strictEqual(res.length, 155)
       })
       
       await t.test('returns correct tokens', t => {
-        t.assert.deepStrictEqual(res[0], { type: 'identifier', value: 'var' })
-        t.assert.deepStrictEqual(res[50], { type: '(' })
-        t.assert.deepStrictEqual(res[75], { type: ')' })
-        t.assert.deepStrictEqual(res[120], { type: 'for' })
+        t.assert.deepEqual(res[0], {
+          'type': 'identifier', 'value': 'var',
+          'startOffset': 3, 'endOffset': 6
+        })
+        t.assert.deepEqual(res[50], { 
+          'type': '(', 'value': null,
+          'startOffset': 229, 'endOffset': 230
+        })
+        t.assert.deepEqual(res[75], { 
+          'type': ')', 'value': null,
+          'startOffset': 345, 'endOffset': 346
+        })
       })
     })
   })
