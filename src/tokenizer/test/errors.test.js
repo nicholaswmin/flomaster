@@ -25,14 +25,14 @@ test('lang:ecmascript', async t => {
   await t.test('arg[0] has an invalid character', async t => {
     await t.test('throws a SourceParsingError', async t => {
       t.assert.throws(() => [...t.t.tokenize(source)], {
-          name: 'SourceParsingError'
+          name: 'ColoredSourceError'
       })
     })
     
     await t.test('includes ANSI colors', async t => {
       // 31m is part of the ANSI CODE for red.
       t.assert.throws(() => [...t.t.tokenize(source)], {
-        name: 'SourceParsingError',
+        name: 'ColoredSourceError',
         message: /31m/
       })
     })
@@ -45,7 +45,7 @@ test('lang:ecmascript', async t => {
       // `dolo3rLomipsumdolor` would render jumbled-up 
       // full of ANSI colors, if there was color
       t.assert.throws(() => [...t.t.tokenize(source)], {
-        name: 'SourceParsingError',
+        name: 'ColoredSourceError',
         message: /dolo3rLomipsumdolor/
       })
     })
@@ -54,14 +54,16 @@ test('lang:ecmascript', async t => {
       try {
         [...t.t.tokenize(source)]
       } catch ({ message }) {
+        
+        console.log(message)
         t.assert.deepStrictEqual(message.split('\n')
             .map(decolor).filter(noNewlines), [
               'Invalid token',
               '    ⇩',
               'dolo3rLomipsumdolor',
               '    ⇧',
-              'line: 2',
-              'column: 4'
+              'Line: 2',
+              'Column: 4'
             ])
       }
     })

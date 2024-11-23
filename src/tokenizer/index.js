@@ -5,7 +5,7 @@
 // @REVIEW why is this a class and not just a pure function,
 // which receives it's token types as argument?
 
-import { SourceParsingError } from './errors.js'
+import { ColoredSourceError } from './errors.js'
 
 const END = Symbol('END')
 
@@ -47,7 +47,7 @@ class Tokenizer {
 			}
 			
 			if (!hasMatch) 
-			 throw new SourceParsingError('Invalid token', { source, offset })
+			 throw new ColoredSourceError('Invalid token', { source, offset })
 		}
 
 		yield { type: END }
