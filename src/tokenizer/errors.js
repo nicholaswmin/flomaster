@@ -62,10 +62,8 @@ class Lines {
       !Object.hasOwn(process || {}, 'env')
   }
   
-  // - The rules captured here follow guidelines   
-  //   outlined here: https://no-color.org/   
-  // - They also attempt to iron-over some inconsistencies:    
-  //   https://github.com/nodejs/help/issues/4507
+  // - Follow guidelines from: https://no-color.org/   
+  // - Also: https://github.com/nodejs/help/issues/4507
   static canColor() {
     const defined = v => typeof v !== 'undefined'
     
