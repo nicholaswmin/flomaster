@@ -12,10 +12,6 @@ test('lang:js', async t => {
       await t.test('returns correct token count', t => {
         t.assert.strictEqual(res.length, 47)
       })
-      
-      await t.test('returns correct tokens', t => {
-        console.log(res[50])
-      })
     })
     
     await t.test('complex example', { skip: true }, async t => {

@@ -1,9 +1,6 @@
 import test from 'node:test'
 import { Tokenizer } from '../index.js'
   
-const noAnsicode = str => str.replace(/\u001b\[.*?m/g, '')
-const noNewlines = str => str.trim().length > 0
-
 test('lang:ecmascript', async t => {
   // Setup so it fails on numerical characters.
   t.beforeEach(t => t.t = new Tokenizer([
