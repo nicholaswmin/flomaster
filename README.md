@@ -6,7 +6,7 @@
   <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. The truth is that he's a common iguana, his real name is actually 'Alizavras' and he hails from Xylotympou, a sunny village in Cyprus. We play along because he eats the mosquitos. Courtesy of icons8.com" width="72">
 </a>
 
-- [sandbox][snd]
+[sandbox][snd]
 
 ## why
 
