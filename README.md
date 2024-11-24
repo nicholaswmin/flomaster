@@ -28,9 +28,9 @@ Simply put: it's *faster*.
 
 ## todos
 
-- [x] get a non-fancy [tokenizer][tpl] to iterate upon:
+- [x] get a non-fancy [tokenizer][tok] to iterate upon:
     - [x] return shape: `[{ token: 'keyword', start: 5, end: 10 }]`
-    - [x] add minimal tests
+    - [x] add minimal tests. 
     - [ ] the tokenizer falls over some regex,     
           see notes in test.
     - [ ] fix/ensure errors are correctly printable in browser
@@ -85,7 +85,6 @@ Read the [pages doc.][pdc]
 <!-- References -->
 
 [tok]: https://en.wikipedia.org/wiki/Lexical_analysis#Tokenization
-[tml]: https://github.com/nicholaswmin/flomaster/blob/main/src/tokenizer/index.js
 [fmp]: https://developer.mozilla.org/en-US/docs/Glossary/First_meaningful_paint
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
