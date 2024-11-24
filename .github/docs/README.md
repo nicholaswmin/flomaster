@@ -1,6 +1,6 @@
 ## Doc. pages
 
-Additional documentation apart from `README.md` should be added here.  
+Additional documentation apart from the root `README.md` should be added here.  
 This keeps the root directory clutter-free.
 
 The `pages.yml` workflow deploys this folder to [Github Pages][ghp].  
@@ -24,3 +24,6 @@ workflow, which sets it as the homepage.
 You can manually trigger a doc. deployment:
 
 Select `Actions` -> `Deploy docs` -> `Run workflow`
+
+
+[ghp]: https://pages.github.com
