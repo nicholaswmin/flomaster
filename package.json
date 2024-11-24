@@ -6,6 +6,7 @@
   "exports": "./src/index.js",
   "browser": "./src/index.js",
   "scripts": {
+    "play": "npx http-server",
     "test": "node --test"
   },
   "repository": {
@@ -16,8 +17,7 @@
     "syntax",
     "highlighter",
     "highlight-api",
-    "tokenizer",
-    "ast"
+    "tokenizer"
   ],
   "author": "Nicholas Kyriakides <nik.kyriakides@gmail.com> (https://github.io/nicholaswmin)",
   "license": "MIT",

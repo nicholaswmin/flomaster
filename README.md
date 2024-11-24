@@ -3,10 +3,10 @@
 [![tests](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml/badge.svg)](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml)
 
 <a href="https://youtube.com/watch?v=JFvXvV0oZIo">
-  <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon, who cant stfu about the fact he used to star in those LG TV's sample videos you see in the malls. We later found out he's an Iguana, not a Chameleon and his real name is actually 'Alizavras'. He hails from Xylotympou, a sunny village in Cyprus. We said nothing because he takes care of the mosquitos'. Courtesy of icons8.com" width="72">
+  <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. His real name is actually 'Alizavras' and He hails from Xylotympou, a sunny village in Cyprus. We said nothing because he takes care of the mosquitos'. Courtesy of icons8.com" width="72">
 </a>
 
-fast syntax highlighting [WIP]
+Runnable[Sandbox][snd]
 
 ## why
 
@@ -22,7 +22,8 @@ the main thread, hence contributing to "jank" and [First-Meaningful Paint][fmp]
 delays. Additionally, it enlarges the DOM further exacerbating the issue.          
 
 This prototype attempts an alternative method using position offsets,  
-so it (should) avoid these issues altogether. Simply put: it's *faster*.  
+so it (should) avoid these issues altogether.   
+Simply put: it's *faster*.    
 
 
 ## todos
@@ -37,6 +38,22 @@ so it (should) avoid these issues altogether. Simply put: it's *faster*.
 - [ ] add a small benchmark
   - [ ] decide on the parameters *before* you start
 - [ ] review if it makes sense
+
+## test
+
+> tests require Node `v22+`
+
+```bash
+node --run test
+```
+
+## misc
+
+serve sandbox locally
+
+```bash
+$ node --run play
+```
 
 ## license
 
@@ -68,3 +85,4 @@ so it (should) avoid these issues altogether. Simply put: it's *faster*.
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
 [bnk]: https://www.chromium.org/blink/
+[snd]: ./.github/sandbox.html
