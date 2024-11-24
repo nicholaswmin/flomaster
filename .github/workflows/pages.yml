@@ -22,8 +22,7 @@ jobs:
       
       - name: Copy README as homepage
         run: cp README.md .github/pages/index.md
-        
-      # convert .md to .html
+
       - name: Jekyll build
         uses: actions/jekyll-build-pages@v1
         with:
