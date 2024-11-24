@@ -55,7 +55,7 @@ serve sandbox locally
 $ node --run play
 ```
 
-deploy docs
+deploy documentation
 
 Read the [pages doc.][pdc]
 
@@ -91,4 +91,4 @@ Read the [pages doc.][pdc]
 [bnk]: https://www.chromium.org/blink/
 [snd]: https://nicholaswmin.github.io/flomaster/demo
 [dcs]: https://nicholaswmin.github.io/flomaster
-[pdc]: ./.github/pages
+[pdc]: ./.github/docs
