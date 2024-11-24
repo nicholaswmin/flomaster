@@ -91,4 +91,4 @@ Read the [pages doc.][pdc]
 [bnk]: https://www.chromium.org/blink/
 [snd]: https://nicholaswmin.github.io/flomaster/sandbox
 [dcs]: https://nicholaswmin.github.io/flomaster
-[pdc]: ./.github/docs
+[pdc]: https://github.com/nicholaswmin/flomaster/tree/main/.github/docs
