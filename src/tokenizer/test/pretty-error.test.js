@@ -19,7 +19,7 @@ test('SyntaxError: pretty printing', async t => {
 
   await t.test('error message layout', async t => {    
     await t.test('visually points the source column', async t => {
-      t.assert.deepStrictEqual(format(err.message), [
+      t.assert.strictEqual(format(err.message), [
           'Invalid token',
           '    ⇩',
           'dolo3rLomipsumdolor',
@@ -32,6 +32,7 @@ test('SyntaxError: pretty printing', async t => {
     
   await t.test('colors', async t => {
     await t.test('is ANSI-code colored', async t => {
+      // 31m is ANSI CODE for red, if included, it's colored.
       t.assert.ok(err.message.includes('31m'))
     })
     
@@ -46,7 +47,6 @@ test('SyntaxError: pretty printing', async t => {
      
       await t.test('NO_COLOR nor FORCE_COLOR is set', async t => {
         await t.test('is ANSI-code colored', async t => {
-          // 31m is ANSI CODE for red, if included, it's colored.
           t.assert.ok(err.message.includes('31m'))
         })
       }) 
