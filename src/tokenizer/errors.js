@@ -62,9 +62,10 @@ class Lines {
       !Object.hasOwn(process || {}, 'env')
   }
   
-  // The rules captured in this method follow guidelines outlined here:
+  // The rules captured in this method follow guidelines outlined here:  
   // - NO_COLOR: https://no-color.org/
-  // They also attempt to iron-over some inconsistencies:
+  
+  // They also attempt to iron-over some inconsistencies:   
   // - https://github.com/nodejs/help/issues/4507
   static canColor() {
     const IS_TEST = () => typeof process !== 'undefined'
