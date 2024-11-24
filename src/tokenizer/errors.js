@@ -93,6 +93,7 @@ class ConsoleLoggable {
 
   addLine(line) {
     this.addString(line.str, '%c')
+    // @NOTE: monospace is required to ensure alignment.
     this.css.push(`color: ${line.color}; font-family:monospace;`)
     
     return this
