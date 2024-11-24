@@ -48,6 +48,21 @@
     </main>
   </body>
 
+  <!-- test pretty error -->
+  <script type="module">
+    import { PrettySyntaxError } from '../../src/tokenizer/errors.js'
+    
+    const offset = 10
+    const source = `
+      let expoentiation = => 3 ** 4;
+      let 3foo = 'bar';
+      let bang_bang_ure_boolean = x => !!x;
+    `
+
+    throw new PrettySyntaxError('Invalid token', { source, offset })
+  </script>
+
+  <!-- editor misc. -->
   <script type="module">
     const $ = document.querySelector.bind(document)
   

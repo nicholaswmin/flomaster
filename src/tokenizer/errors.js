@@ -1,62 +1,69 @@
 /*
-Set of coloring/layout utilities for generating  
-pretty errors of the source itself, the raw text we're tokenizing.
+Pretty Syntax Errors
+@nicholaswmin, MIT License
 
+A SyntaxError that pretty-prints the exact error column, in the source.
 - Isomorphic, pretty prints in Node.js + browser.
-- The line classes allows declaring how we want it to be displayed.
-  The class itself makes the decision, based on the environment.
-  
-  @nicholaswmin, MIT License
+- Respects `FORCE_COLOR` and `NO_COLOR` env. variables.
+- This only makes sense if you're building the compiler/tokenizer/lexer 
+  itself. It's not a SyntaxError substitute.
+
+  ## Usage:
+
+const offset = 41
+const source = `
+  let expoentiation = => 3 ** 4;
+  let 3foo = 'bar';
+  let bang_bang_ure_boolean = x => !!x;
+`
+
+throw new PrettySyntaxError('Invalid token', { source, offset })
+
+' Error: SyntaxError  '
+'                     '
+'  Invalid token      '
+'      ⇩              '
+'..let 3foo = 'bar';  ' 
+'      ⇧              '
+'                     '
+'  Line: 2            '
+'  Column: 4          '
 */
 
 class Lines {
-  constructor(lines) {
+  constructor(message, lines) {
+    this.message = message
     this.lines = lines
   }
-  
+    
   toString() {
-    return this.lines
-      .reduce(this.collect.bind(this), '')
+    return this.constructor.runsInBrowser() 
+      ? this.log(this.lines).message
+      : this.join(this.lines)  
   }
   
-  collect(str, line) {
-    return str += line.toString()
-  } 
+  join(lines) {
+    return lines.reduce((acc, l) => acc + 
+      (this.constructor.canColor() ? 
+        l.toANSIString() : 
+        l.toString()), '')
+  }
 
-  isBrowser() {
+  log(lines) {
+    lines.reduce((loggable, l) => 
+      loggable.addLine(l), 
+      new ConsoleLoggable()).log()
+
+    return this
+  }
+
+  static runsInBrowser() {
     return typeof process === 'undefined' ||
       !Object.hasOwn(process || {}, 'env')
-  }
-}
-
-class Line {
-  static colors = {
-    'reset': '0', 'red': '31', 'green': '32', 'yellow': '33', 
-    'blue': '34', 'magenta': '35', 'cyan': '36', 'white': '37'
-  }
-
-  constructor(text, color = 'white', offset, { center = false } = {}) {
-    this.text = this.pad(text, offset, { center })
-    this.color = color
-  }
-  
-  toString() {
-    return this.colorize(this.color, this.text)
-  }
-  
-  log() {
-    console.log(`%c ${this.text}`, `color: ${this.color}`)
-  }
-  
-  colorize(name = 'white', ...args) {
-    return Line.canColor() 
-      ? `\x1b[${Line.colors[name] || '37'}m${args.join(' ')}\x1b[0m` 
-      : args.join()
   }
   
   // The rules captured in that method follow guidelines outlined here:
   // - NO_COLOR: https://no-color.org/
-  //
   // They also attempt to iron-over some inconsistencies:
   // - https://github.com/nodejs/help/issues/4507
   static canColor() {
@@ -71,47 +78,92 @@ class Line {
 
     const isTTY = () => !!process.stdout?.isTTY || 
       typeof process.env.NODE_TEST_CONTEXT !== 'undefined'
-    
-    if (NO_COLOR())
-      return false
-    
-    if (FORCE_COLOR() || isTTY() || IS_TEST())
-      return true
 
-    return false
-  }
-
-  pad(text, offset, { center }) {
-    const calc = offset - (center ? text.length / 2 : 0)
-    return ' '.repeat(calc < 0 ? 0 : calc) + text
+    return NO_COLOR() 
+      ? false 
+      : FORCE_COLOR() || isTTY() || IS_TEST()
   }
 }
 
-class ColoredSourceError extends Error {
+class ConsoleLoggable {
+  constructor() {
+    this.str = ''
+    this.css = []
+  }
+
+  addLine(line) {
+    this.addString(line.str, '%c')
+    this.css.push(`color: ${line.color}; font-family:monospace;`)
+    
+    return this
+  }
+  
+  addString(str, specifier = '') {
+    this.str += specifier + str
+    
+    return this
+  }
+  
+  log() {
+    console.log(this.str, ...this.css)
+  }
+}
+
+class Line {
+  static colors = {
+    'reset': '0', 'red': '31', 'green': '32', 'yellow': '33', 
+    'blue': '34', 'magenta': '35', 'cyan': '36', 'white': '37'
+  }
+
+  constructor(str, color = 'white', offset, { center = false } = {}) {
+    this.str = this.pad(str, offset, { center })
+    this.color = color
+  }
+  
+  toString() {
+    return this.str
+  }
+
+  toANSIString() {
+    return `\x1b[${Line.colors[this.color] || '37'}m${this.str}\x1b[0m` 
+  }
+
+  pad(str, offset, { center }) {
+    return ' '.repeat(Math.max(0, offset - (center ? str.length / 2 : 0))) + str
+  }
+}
+
+class Linebreak extends Line {
+  constructor(lines = 1) {
+    super('\n'.repeat(Math.max(1, lines)), 'white', 0)
+  }
+}
+
+class PrettySyntaxError extends Error {
   constructor(message, { cause, source, offset }) {
     const lines = source.slice(0, offset).split('\n')
     const prior = lines.at(-1).trim()
     const after = source.slice(offset + 1, source.indexOf('\n', offset))
     const error = source.at(offset)
 
-    super(new Lines([
-      '\n', '\n',
+    super(new Lines(message, [
+      new Linebreak(2),
       new Line(message, 'red', prior.length, { center: true }),
-      '\n',
+      new Linebreak(),
       new Line('⇩', 'red', prior.length),
-      '\n',
+      new Linebreak(),
       new Line(prior, 'green'), new Line(error, 'red'), new Line(after),
-      '\n',
+      new Linebreak(),
       new Line('⇧', 'red', prior.length),
-      '\n',
+      new Linebreak(),
       new Line(`Line: ${lines.length - 1}`),
-      '\n',
+      new Linebreak(),
       new Line(`Column: ${prior.length}`),
-      '\n'
+      new Linebreak()
     ]), { cause })
 
-    this.name = this.constructor.name
+    this.name = 'SyntaxError'
   }
 }
 
-export { ColoredSourceError }
+export { PrettySyntaxError }
