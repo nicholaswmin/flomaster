@@ -85,4 +85,4 @@ $ node --run play
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
 [bnk]: https://www.chromium.org/blink/
-[snd]: https://nicholaswmin.github.io/flomaster/demo.html
+[snd]: ./demo.html
