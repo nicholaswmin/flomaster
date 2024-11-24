@@ -7,7 +7,6 @@
 </a>
 
 - [sandbox][snd]
-- [docs][dcs]
 
 ## why
 
@@ -56,6 +55,10 @@ serve sandbox locally
 $ node --run play
 ```
 
+deploy docs
+
+Read the [pages doc.][pdc]
+
 ## license
 
 > MIT License  
@@ -88,3 +91,4 @@ $ node --run play
 [bnk]: https://www.chromium.org/blink/
 [snd]: https://nicholaswmin.github.io/flomaster/demo
 [dcs]: https://nicholaswmin.github.io/flomaster
+[pdc]: ./.github/pages

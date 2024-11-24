@@ -1,4 +1,4 @@
-name: Deploy docs to Pages
+name: Deploy docs
 on:
   push:
     branches: [$default-branch]
@@ -21,12 +21,12 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Copy README as homepage
-        run: cp README.md .github/pages/index.md
+        run: cp README.md .github/docs/index.md
 
       - name: Jekyll build
         uses: actions/jekyll-build-pages@v1
         with:
-          source: "./.github/pages"
+          source: "./.github/docs"
           destination: "./output"
 
       - name: Upload artifact
