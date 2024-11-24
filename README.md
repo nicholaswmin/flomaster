@@ -6,7 +6,8 @@
   <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. His real name is actually 'Alizavras' and He hails from Xylotympou, a sunny village in Cyprus. We said nothing because he takes care of the mosquitos'. Courtesy of icons8.com" width="72">
 </a>
 
-[sandbox][snd]
+- [sandbox][snd]
+- [docs][dcs]
 
 ## why
 
@@ -85,4 +86,5 @@ $ node --run play
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
 [bnk]: https://www.chromium.org/blink/
-[snd]: ./demo.html
+[snd]: https://nicholaswmin.github.io/flomaster/demo
+[dcs]: https://nicholaswmin.github.io/flomaster

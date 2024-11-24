@@ -1,0 +1,40 @@
+name: Deploy docs to Pages
+on:
+  push:
+    branches: [$default-branch]
+  # allow manual runs from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Copy README as homepage
+        run: cp README.md .github/pages/index.md
+        
+      # convert .md to .html
+      - name: Jekyll build
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: "./.github/pages"
+          destination: "./output"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './output'
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
