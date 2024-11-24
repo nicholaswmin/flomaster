@@ -6,7 +6,7 @@
   <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. His real name is actually 'Alizavras' and He hails from Xylotympou, a sunny village in Cyprus. We said nothing because he takes care of the mosquitos'. Courtesy of icons8.com" width="72">
 </a>
 
-Runnable[Sandbox][snd]
+[sandbox][snd]
 
 ## why
 
