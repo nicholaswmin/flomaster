@@ -3,7 +3,7 @@
 [![tests](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml/badge.svg)](https://github.com/nicholaswmin/flomaster/actions/workflows/test.yml)
 
 <a href="https://youtube.com/watch?v=JFvXvV0oZIo">
-  <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. The truth is that he's a common iguana, his real name is actually 'Alizavras' and he hails from Xylotympou, a sunny village in Cyprus. We play along because he eats the mosquitos'. Courtesy of icons8.com" width="72">
+  <img src="https://github.com/user-attachments/assets/797123a3-f70c-4128-a47c-babb2bdbfdb1" title="This is 'James', a colour-camouflaging chameleon. The truth is that he's a common iguana, his real name is actually 'Alizavras' and he hails from Xylotympou, a sunny village in Cyprus. We play along because he eats the mosquitos. Courtesy of icons8.com" width="72">
 </a>
 
 - [sandbox][snd]
@@ -28,7 +28,7 @@ Simply put: it's *faster*.
 
 ## todos
 
-- [x] get non-fancy [tokenizer][tok] to iterate upon:
+- [x] get a non-fancy [tokenizer][tpl] to iterate upon:
     - [x] return shape: `[{ token: 'keyword', start: 5, end: 10 }]`
     - [x] add minimal tests
     - [ ] the tokenizer falls over some regex,     
@@ -85,6 +85,7 @@ Read the [pages doc.][pdc]
 <!-- References -->
 
 [tok]: https://en.wikipedia.org/wiki/Lexical_analysis#Tokenization
+[tml]: https://github.com/nicholaswmin/flomaster/blob/main/src/tokenizer/index.js
 [fmp]: https://developer.mozilla.org/en-US/docs/Glossary/First_meaningful_paint
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
