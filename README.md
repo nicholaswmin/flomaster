@@ -10,10 +10,10 @@
 
 ## why
 
-While browser based syntax highlighters slightly differ,  
-they all follow the same fundamental process:  
- 
-1. [Lexical Tokenization][tok] of raw source code
+The current process, used by every (top 3 at least) 
+syntax highlighters:
+
+1. [Lexical tokenization][tok] of raw source code
 2. Wrapping *each* token in a DOM element 
 3. CSS selection
 
