@@ -1,20 +1,38 @@
 /*
 Pretty Syntax Errors
-@nicholaswmin, MIT License
 
-A SyntaxError that pretty-prints the exact error column, in the source.
+> @nicholaswmin, MIT License
+
+A SyntaxError that pretty-prints the and higlights error line & column, 
+in your source.
+This is only useful if you're building a compiler/lexer/tokenizer.  
+Although it is an `instanceof SyntaxError`, their similarities end there.
+
 - Isomorphic, pretty prints in Node.js + browser.
 - Respects `FORCE_COLOR`, `NO_COLOR` env. variables.
-- This only makes sense if you're building the compiler/tokenizer/lexer itself since it 
-  illuminates a given `source`. It's not standard `SyntaxError` substitute.
 
+Additional Notes:
+
+ - Node.js: The `error.message` is populated with the additional 
+   pretty-printing. Includes colors if appropriate.
+
+ - In browsers, the `err.cause` is used instead. No colors.
+   Browsers immediately call the `message.toString()` method on `new Error()`, 
+   instead of waiting until it's actually thrown and that looks awkward.  
+
+ - Safari does not show `error.cause` in it's DevTools so we `console.error`
+   the pretty-printed error on `new Error()`. There's no workaround to this,
+   although it shouldn't realistically be an issue for most use-cases.
+  
 ## Usage:
 
-```
-import { PrettySyntaxError } from './errors.js'
+Example: highlight the problematic `3` in `3foo`: 
 
-const offset = 41
-const source = `
+```
+import { PrettySyntaxError } from './pretty-syntax-error.js'
+
+const offset = 41 // position of error in the source string
+const source = ` // the string you're parsing
   let exponentiation = => 3 ** 4;
   let 3foo = 'bar';
   let bang_bang_ure_boolean = x => !!x;
