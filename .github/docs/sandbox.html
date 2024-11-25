@@ -52,14 +52,14 @@
   <script type="module">
     import { PrettySyntaxError } from '../../src/tokenizer/errors.js'
     
-    const offset = 10
+    const offset = 48
     const source = `
       let expoentiation = => 3 ** 4;
       let 3foo = 'bar';
       let bang_bang_ure_boolean = x => !!x;
     `
 
-    throw new PrettySyntaxError('Invalid token', { source, offset })
+    throw new PrettySyntaxError('I am an error yay', { source, offset })
   </script>
 
   <!-- editor misc. -->

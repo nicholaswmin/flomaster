@@ -4,15 +4,18 @@ Pretty Syntax Errors
 
 A SyntaxError that pretty-prints the exact error column, in the source.
 - Isomorphic, pretty prints in Node.js + browser.
-- Respects `FORCE_COLOR` and `NO_COLOR` env. variables.
-- This only makes sense if you're building the compiler/tokenizer/lexer 
-  itself. It's not a SyntaxError substitute.
+- Respects `FORCE_COLOR`, `NO_COLOR` env. variables.
+- This only makes sense if you're building the compiler/tokenizer/lexer itself since it 
+  illuminates a given `source`. It's not standard `SyntaxError` substitute.
 
-  ## Usage:
+## Usage:
+
+```
+import { PrettySyntaxError } from './errors.js'
 
 const offset = 41
 const source = `
-  let expoentiation = => 3 ** 4;
+  let exponentiation = => 3 ** 4;
   let 3foo = 'bar';
   let bang_bang_ure_boolean = x => !!x;
 `
@@ -28,6 +31,7 @@ throw new PrettySyntaxError('Invalid token', { source, offset })
 '                     '
 '  Line: 2            '
 '  Column: 4          '
+```
 */
 
 class Lines {
@@ -37,7 +41,7 @@ class Lines {
   }
     
   toString() {
-    return this.constructor.runsInBrowser() 
+    return this.constructor.envIsBrowser() 
       ? this.log(this.lines).message
       : this.join(this.lines)  
   }
@@ -57,13 +61,14 @@ class Lines {
     return this
   }
 
-  static runsInBrowser() {
-    return typeof process === 'undefined' ||
-      !Object.hasOwn(process || {}, 'env')
+  static envIsBrowser() {
+    return globalThis !== 'undefined' && 
+      Object.hasOwn(globalThis, 'window')
   }
   
-  // - Follow guidelines from: https://no-color.org/   
-  // - Also: https://github.com/nodejs/help/issues/4507
+  // - Normally we'd use `process.stdout.isTTY` but, 
+  //   theres an issue: https://github.com/nodejs/help/issues/4507
+  // - Follows guidelines: https://no-color.org/
   static canColor() {
     const defined = v => typeof v !== 'undefined'
     
@@ -106,7 +111,8 @@ class ConsoleLoggable {
   }
   
   log() {
-    console.log(this.str, ...this.css)
+    (globalThis || window)
+      .console.log(this.str, ...this.css)
   }
 }
 
@@ -157,9 +163,9 @@ class PrettySyntaxError extends Error {
       new Linebreak(),
       new Line('⇧', 'red', prior.length),
       new Linebreak(),
-      new Line(`Line: ${lines.length - 1}`),
+      new Line(`Line: ${lines.length}`),
       new Linebreak(),
-      new Line(`Column: ${prior.length}`),
+      new Line(`Column: ${prior.length + 1}`),
       new Linebreak()
     ]), { cause })
 

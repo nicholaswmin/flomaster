@@ -1,6 +1,6 @@
 import test from 'node:test'
 import { Tokenizer } from '../index.js'
-  
+
 test('lang:ecmascript', async t => {
   t.beforeEach(t => t.t = new Tokenizer())
 
