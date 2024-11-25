@@ -34,6 +34,16 @@ throw new PrettySyntaxError('Invalid token', { source, offset })
 ```
 */
 
+const envIsBrowser = () => globalThis !== 'undefined' && 
+  Object.hasOwn(globalThis, 'window')
+
+const browserIsSafari = () => {
+  return envIsBrowser() && 
+    globalThis?.window
+      ?.navigator?.vendor
+      ?.toLowerCase().includes('apple')
+}
+
 class Lines {
   constructor(message, lines) {
     this.message = message
@@ -41,8 +51,10 @@ class Lines {
   }
     
   toString() {
-    return this.constructor.envIsBrowser() 
-      ? this.log(this.lines).message
+    // Safari doesn't display `err.cause` in its DevTools,
+    // so we gotta log it to the console at least
+    return browserIsSafari() 
+      ? this.logAndJoin(this.lines)
       : this.join(this.lines)  
   }
   
@@ -52,18 +64,14 @@ class Lines {
         l.toANSIString() : 
         l.toString()), '')
   }
+  
+  logAndJoin(lines) {
+    const joined = this.join(lines)
+    
+    // log in monospace to avoid alignemnt issues
+    globalThis.console.error(`%c${joined}`, 'font-family: monospace;')
 
-  log(lines) {
-    lines.reduce((loggable, l) => 
-      loggable.addLine(l), 
-      new ConsoleLoggable()).log()
-
-    return this
-  }
-
-  static envIsBrowser() {
-    return globalThis !== 'undefined' && 
-      Object.hasOwn(globalThis, 'window')
+    return joined
   }
   
   // - Normally we'd use `process.stdout.isTTY` but, 
@@ -84,35 +92,8 @@ class Lines {
     const isTTY = () => !!process.stdout?.isTTY || 
       typeof process.env.NODE_TEST_CONTEXT !== 'undefined'
 
-    return NO_COLOR() 
-      ? false 
-      : FORCE_COLOR() || isTTY() || IS_TEST()
-  }
-}
-
-class ConsoleLoggable {
-  constructor() {
-    this.str = ''
-    this.css = []
-  }
-
-  addLine(line) {
-    this.addString(line.str, '%c')
-    // @NOTE: monospace is required to ensure alignment.
-    this.css.push(`color: ${line.color}; font-family:monospace;`)
-    
-    return this
-  }
-  
-  addString(str, specifier = '') {
-    this.str += specifier + str
-    
-    return this
-  }
-  
-  log() {
-    (globalThis || window)
-      .console.log(this.str, ...this.css)
+    return envIsBrowser() || NO_COLOR() 
+      ? false : FORCE_COLOR() || isTTY() || IS_TEST()
   }
 }
 
@@ -146,14 +127,13 @@ class Linebreak extends Line {
   }
 }
 
-class PrettySyntaxError extends Error {
+class PrettySyntaxError extends SyntaxError {
   constructor(message, { cause, source, offset }) {
-    const lines = source.slice(0, offset).split('\n')
-    const prior = lines.at(-1).trim()
+    const splat = source.slice(0, offset).split('\n')
+    const prior = splat.at(-1).trim()
     const after = source.slice(offset + 1, source.indexOf('\n', offset))
     const error = source.at(offset)
-
-    super(new Lines(message, [
+    const lines = new Lines(message, [
       new Linebreak(2),
       new Line(message, 'red', prior.length, { center: true }),
       new Linebreak(),
@@ -163,11 +143,15 @@ class PrettySyntaxError extends Error {
       new Linebreak(),
       new Line('⇧', 'red', prior.length),
       new Linebreak(),
-      new Line(`Line: ${lines.length}`),
+      new Line(`Line: ${splat.length}`),
       new Linebreak(),
       new Line(`Column: ${prior.length + 1}`),
       new Linebreak()
-    ]), { cause })
+    ])
+
+    super(envIsBrowser() ? message : lines.toString(), { 
+      cause: envIsBrowser() ? lines.toString() : 'parsing syntax error'
+    })
 
     this.name = 'SyntaxError'
   }
