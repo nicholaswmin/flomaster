@@ -5,81 +5,310 @@
     <link type="image/png" sizes="16x16" rel="icon" href="https://github-production-user-asset-6210df.s3.amazonaws.com/3926463/389187044-797123a3-f70c-4128-a47c-babb2bdbfdb1.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241124%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241124T120400Z&X-Amz-Expires=300&X-Amz-Signature=e52769bd9ecdfa0deccf1a9d1639db9531fa0724d807eb093e1be3c4aaa6f26c&X-Amz-SignedHeaders=host">
     <meta name="description" content="Prototyping payground">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title class="title">Flomaster sandbox</title>
-
+    <title class="title">sandbox</title>
     <style>
-      @import url('https://fonts.cdnfonts.com/css/noto-serif-tangut-2');
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
+      * { font-family: 'Fira Mono', monospace; 
+        font-size: 14px; color: antiquewhite }
+      
+      textarea, figure p { white-space: pre !important;   resize: none; }
+      fieldset { border: none; }
+      h1,h2,h3,h4,h5 { font-weight: normal; font-size: 80%; color: #999; }
+      fieldset > * { display: block; }
+      select { background: transparent; padding: 1em; border-radius: 4px; }
+      label { font-size: 85%; color: #999; } 
+      a { color: blanchedalmond; text-decoration: none;} 
+      body { background: #201818; padding: 1em; color: #aaa; max-width: 130ch; 
+        margin: auto; 
+      }
+      
+      @media screen and (max-width: 760px) {
+        section, header, textarea, fieldset, section, #result p { 
+          display: block !important;
+          min-height: fit-content !important;
+          width: -webkit-fill-available;
 
-      *:not(textarea) { font-family: 'Noto Serif Tangut' !important; }
-      a { color: #ba2121; text-decoration: none;}
-      body { 
-        font-family: 'Noto Serif Tangut', sans-serif;
-        background: #FCF6F6; padding: 1em;  
-        color: #222; width: 100ch; margin: auto; 
+          background: transparent; padding: 0.5em 1em; border-radius: 4px;
+          display: block; padding: 2em; margin: 0;
+          justify-items: center;
+        }
+        header > section { display: none !important; }
+        header { justify-items: center; padding: 1em; }
+      }  
+      
+
+      figure[haserror]  * { 
+        opacity: 1 !important;
       }
-      header * { margin-top: 0; margin-bottom: 0.25em; font-size: 90%;  } 
-      fieldset { border: 0; text-align: right; margin: 1em 0; padding: 0; }
-      fieldset > div { display: grid; grid-template-columns: auto auto; }
-      button   { margin: 0.5em; padding: 1em 3em; }
-      textarea { 
-        width: -webkit-fill-available; font-family: 'Fira Code', monospace;
-        min-height: 50vh; font-size: 16px; padding: 2em; margin: 0.5em;
-        box-sizing: border-box; background: none;
+
+      header {
+        display: grid; grid-template-columns: repeat(2, 1fr); 
+        align-content: baseline; align-items: center; justify-items: flex-end;
+        section { 
+          display: grid; width: -webkit-fill-available; 
+          * { width: initial; } justify-content: flex-end;
+        }
+        section:first-child { justify-content: flex-start;  }
+        * { margin: 0.5em 0; font-size: 90%; } 
       }
+
+      footer { color: #666; font-size: 85%; padding: 1em; }
+      main fieldset { border: 0; padding: 0; height: calc(90vh - 150px); }
+      main section { display: grid; grid-template-columns: repeat(2, 1fr); 
+        margin: 0; padding: 0; height: -webkit-fill-available; font-size: 110%;
+      }
+
+      figure, textarea { 
+        display: grid;
+         position: relative;
+        height: -webkit-fill-available;
+        max-width: -webkit-fill-available; 
+        width: -webkit-fill-available;
+        min-height: 200px;  
+
+        padding: 3em; margin: 1em 0; white-space: pre !important;
+        border: 1px dashed #333; box-sizing: border-box; background: none; 
+        color: antiquewhite;
+        p { margin: 0; padding: 0; }
+        .error {
+          opacity: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+          margin: auto; width: min-content; height: min-content; z-index: 10;
+          pointer-events: none; color: #e25e5f; transition: opacity 0.5s;
+          white-space: pre; font-size: 80%;
+        }    
     </style>
   </head>
 
   <body>
     <header>
-      <h3>Browser review sandbox</h3>
-      <p><a href="https://github.com/nicholaswmin/flomaster">< to project</a></p>
+      <section>
+        <h3>sandbox</h3>
+        <p><a href="https://github.com/nicholaswmin/flomaster">< back to project</a></p>
+        </section>
+        </section>
+        <fieldset>
+        <label for="presets">presets:</label>
+        <select name="presets" id="presets">
+          <option value="exponentiation" selected>Exponentiation</option>
+          <option value="es6-uni-regx">Unicode String & RegExp Literal</option>
+          <option value="es6-symbols">Symbols/Iterators</option>
+          <option value="es6-class-inherit">Class Inheritance</option>
+        </select>
+      </fieldset>
     </header> 
     <main>
-      <fieldset>
-        <div>
-          <textarea id="results" spellcheck="false" disabled></textarea>
+      <section>
+        <fieldset>
+          <label for="editor">Source Code</label>
           <textarea id="editor"
             placeholder="enter source code ..."
-            language="js" tab-size="2" spellcheck="false">
+            oninput="run()"
+            language="js" 
+            tab-size="2" 
+            autofocus
+            spellcheck="false">
           </textarea> 
-        </div>
-        <button title="execute">Run</button>
-      </fieldset>
+        </fieldset>
+
+        <fieldset> 
+          <label for="editor">Highlighted</label>
+          <figure id="resbox">
+            <span id="result"></span>
+            <div id="errors" class="error"></div>
+          </figure>
+        </fieldset>
+      </section>
     </main>
-  </body>
-
-  <!-- test pretty error -->
-  <script type="module">
-    import { PrettySyntaxError } from '../../src/tokenizer/errors.js'
     
-    const offset = 48
-    const source = `
-      let expoentiation = => 3 ** 4;
-      let 3foo = 'bar';
-      let bang_bang_ure_boolean = x => !!x;
-    `
+    <footer>
+      authors: @nicholaswmin, MIT License
+      <br>
+      presets from: "ECMAScript 6: Features", Christian Won. Public License.
+    </footer>
+  </body>
+  
+  <!-- test highlighter -->
+  <style>
+    ::highlight(comment) {
+        color: #888;
+    }
 
-    throw new PrettySyntaxError('I am an error yay', { source, offset })
+    ::highlight(operator) { color: antiquewhite; }
+    ::highlight(declaration-function) { color: pink; }
+    ::highlight(declaration),
+    ::highlight(statement) {
+      color: #169b8d;
+    }
+    
+    ::highlight(identifier) {
+      color: #e4d442;
+    }
+
+    ::highlight(operator-maths),
+    ::highlight(operator-logical),
+    ::highlight(operator-comparison) { 
+      color: #FF9800; 
+    }
+    
+    ::highlight(value),
+    ::highlight(number-literal) {
+      color: #689F38;
+    }
+  </style>
+
+  <!-- main highlighting  . -->
+  <script type="module">
+    import { highlight } from '../../src/index.js'
+    
+    const editor = $('#editor')
+    const resbox = $('#resbox')
+    const result = $('#result')
+
+    window.run = () => {
+      const value = editor.value || '^'
+      const paragraph = document.createElement('p')
+      const text = document.createTextNode(value)
+
+      const tokens = highlight(value)
+      const tokenToRange = token => {
+        const range = new Range()
+        range.setStart(text, token.startOffset)
+        range.setEnd(text, token.endOffset)
+  
+        return range
+      }
+      
+      const grammar = Object.groupBy(tokens, ({ type }) => type)
+      Object.keys(grammar)
+        .map(element => {
+          CSS.highlights
+            .set(element, new Highlight(...grammar[element].map(tokenToRange)))
+      }) 
+
+      paragraph.appendChild(text)
+      result.replaceChildren(paragraph)
+
+      resbox.removeAttribute('haserror')
+    }
+    
+    window.addEventListener('DOMContentLoaded', () => setTimeout(run, 100))
+  </script>
+  
+  <!-- base utils. -->
+  <script>
+    window.$  = sel => document.querySelector(sel)
+    window.$$ = sel => Array.from(document.querySelectorAll(sel))
+    HTMLElement
   </script>
 
   <!-- editor misc. -->
   <script type="module">
-    const $ = document.querySelector.bind(document)
-  
+    const editor = $('#editor')
+    const resbox = $('#resbox')
+    const preset = $('#presets')
+    const errors = $('#errors')
     window.addEventListener('load', e => {
-      const save = e => localStorage.setItem('editor', e.srcElement.value)
-      const tabb = e => {
+      const showErr = ({ error }) => {
+        resbox.setAttribute('haserror', '')
+        errors.textContent = (error.cause || errors.value)?.trim()
+      }
+      
+      const loadps = e => {
+        editor.value = window.presets[e.currentTarget.value]
+        setTimeout(() => editor.dispatchEvent(new CustomEvent('input')), 50)
+      }
+      const backup = e => localStorage.setItem('editor', e.srcElement.value)
+      const tabkey = e => {
         if (e.key !== 'Tab') return
         const { value, selectionStart, selectionEnd } = e.srcElement;
-          const sub =`${value.substring(selectionEnd)}`
-          e.srcElement.value = `${value.substring(0, selectionEnd)}\t${sub}`
+          const sub =`  ${value.substring(selectionEnd)}`
+          e.srcElement.value = `${value.substring(0, selectionEnd)}${sub}`
           e.srcElement.selectionStart = e.srcElement.selectionEnd = selectionEnd + 1
           e.preventDefault()
       }
   
-      $('#editor').addEventListener('keydown', tabb)
-      $('#editor').addEventListener('input', save)
-      $('#editor').value = localStorage.getItem('editor')
+      editor.addEventListener('input', backup)
+      editor.addEventListener('keydown', tabkey)
+      editor.addEventListener('input', backup)
+      preset.addEventListener('change', loadps)
+      window.addEventListener('error', showErr)
+      editor.value = localStorage.getItem('editor') || loadps({ 
+        currentTarget: { value: 'exponentiation' }
+      })
     })
+  </script>
+  
+  <-
+  <script>
+    window.presets = {
+      'exponentiation': `console.log(3 ** 4);
+// Expected output: 81
+
+console.log(10 ** -2);
+// Expected output: 0.01
+
+console.log(2 ** (3 ** 2));
+// Expected output: 512
+
+console.log((2 ** 3) ** 2);
+// Expected output: 64`,
+      'es6-class-inherit': `class Rectangle extends Shape {
+  constructor(id, x, y, width, height) {
+    super(id, x, y);
+    this.width = width;
+    this.height = height;
+  }
+  getSize() {
+    return {
+      width: this.width,
+      height: this.height
+    };
+  }
+}
+
+class Circle extends Shape {
+  constructor(id, x, y, radius) {
+    super(id, x, y);
+    this.radius = radius;
+  }
+}
+
+let rectangle = new Rectangle(2, 11, 21, 100, 200);
+console.log('Rectangle size:', JSON.stringify(rectangle.getSize()));
+
+let circle = new Circle(2, 80, 90, 50);
+console.log('Circle pos:, JSON.stringify(circle.getPos()));
+Result
+Rectangle size: {"width":100,"height":200}
+Circle pos: {"x":80,"y":90}      
+`,
+'es6-uni-regx': `console.log('Compare "𠮷".length === 2:', "𠮷".length === 2);
+console.log('zompare "𠮷".match(/./u)[0].length === 2:', "𠮷".match(/./u)[0].length === 2);
+console.log('Compare "𠮷" === "\\uD842\\uDFB7":, "𠮷" === "\uD842\uDFB7");
+console.log('Compare "𠮷" === "\\u{20BB7}":', "𠮷" === "\u{20BB7}");
+console.log('Compare "𠮷".codePointAt(0) == 0x20BB7:', "𠮷".codePointAt(0) == 0x20BB7);
+for (let codepoint of "𠮷") console.log('Value codepoint:', codepoint);',
+'Symbols': ''es6-uni-regex': 'console.log('Compare "𠮷".length === 2:', "𠮷".length === 2);
+console.log('zompare "𠮷".match(/./u)[0].length === 2:', "𠮷".match(/./u)[0].length === 2);
+console.log('Compare "𠮷" === "\\uD842\\uDFB7":, "𠮷" === "\uD842\uDFB7");
+console.log('Compare "𠮷" === "\\u{20BB7}":', "𠮷" === "\u{20BB7}");
+console.log('Compare "𠮷".codePointAt(0) == 0x20BB7:', "𠮷".codePointAt(0) == 0x20BB7);
+for (let codepoint of "𠮷") console.log('Value codepoint:', codepoint)`,
+  'es6-symbols': `let fibonacci = {
+  [Symbol.iterator]() {
+    let pre = 0,
+      cur = 1;
+    return {
+      next() {
+        [pre, cur] = [cur, pre + cur];
+        return {
+          done: false,
+          value: cur
+        };
+      }
+    };
+  }
+}'`
+    }
   </script>
 </html>

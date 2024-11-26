@@ -13,8 +13,8 @@ class Token {
   constructor({ offset, type, value = null }) {
     this.type = type
     this.value = value
-    this.startOffset = offset
-    this.endOffset = offset + (value?.length || 1)
+    this.startOffset = offset - String(value).length
+    this.endOffset = offset
   }
 }
 
@@ -23,8 +23,8 @@ class Tokenizer {
 		this.types = Object.freeze(types)
 	}
 
-	*tokenize(raw) {
-		let offset = 0, source = Tokenizer.normalize(raw)
+	*tokenize(source) {
+		let offset = 0
 
 		while (offset < source.length) {
 			let hasMatch = false
@@ -38,9 +38,10 @@ class Tokenizer {
 					offset += matched.at(0).length
 
 					if (type != null)
-						yield extractor ? new Token({ 
-						  offset, type, value: extractor(matched.at(0)) 
-						}) : new Token({ offset, type })
+						yield new Token({ offset, type, value: extractor 
+								? extractor(matched.at(0)) 
+								: matched.at(0)
+						})
 
 					hasMatch = true  
 				}
@@ -51,18 +52,6 @@ class Tokenizer {
 		}
 
 		yield { type: END }
-	}
-	
-	static normalize(arg) {
-		return typeof arg === 'string' 
-		  ? arg.trim().length ? arg.trim()
-				: Tokenizer.throw(RangeError, 'arg[0] is empty')
-			: Tokenizer.throw(TypeError, `arg[0] must be a string, is: ${typeof arg}`)
-
-	}
-
-	static throw(err, msg) {
-	  throw new err(msg)
 	}
 }
 

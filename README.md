@@ -34,7 +34,10 @@ Simply put: it's *faster*.
     - [ ] the tokenizer falls over some regex,     
           see notes in test.
     - [ ] fix/ensure errors are correctly printable in browser
-- [ ] a decent color mapper
+    - [ ] many cases that need ironing-out. Fix the presets.
+    - [ ] needs precedence fixes, i.e `forEach` is colored half
+          for `for` and the rest separate.  
+- [x] a decent color mapper
 - [ ] add a small benchmark
   - [ ] decide on the parameters *before* you start
 - [ ] review if it makes sense
