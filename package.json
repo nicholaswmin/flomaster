@@ -6,7 +6,7 @@
   "exports": "./src/index.js",
   "browser": "./src/index.js",
   "scripts": {
-    "demo": "npx http-server -o demo.html",
+    "demo": "npx http-server",
     "test": "node --test"
   },
   "repository": {
