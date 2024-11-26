@@ -37,6 +37,7 @@ Simply put: it's *faster*.
     - [ ] many cases that need ironing-out. Fix the presets.
     - [ ] needs precedence fixes, i.e `forEach` is colored half
           for `for` and the rest separate.
+- [ ] start benchmarks asap, this is more than enough
 - [ ] fix the online sandbox  
 - [x] a decent color mapper
 - [ ] add a small benchmark
