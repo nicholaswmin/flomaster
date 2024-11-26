@@ -1,54 +1,54 @@
+<!-- A demo page to preview browser usage --->
+<!-- *might* also be used in some tests --->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <link type="image/png" sizes="16x16" rel="icon" href="https://github-production-user-asset-6210df.s3.amazonaws.com/3926463/389187044-797123a3-f70c-4128-a47c-babb2bdbfdb1.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241124%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241124T120400Z&X-Amz-Expires=300&X-Amz-Signature=e52769bd9ecdfa0deccf1a9d1639db9531fa0724d807eb093e1be3c4aaa6f26c&X-Amz-SignedHeaders=host">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛝</text></svg>"/>
     <meta name="description" content="Prototyping payground">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title class="title">sandbox</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
-      * { font-family: 'Fira Mono', monospace; 
-        font-size: 14px; color: antiquewhite }
-      
-      textarea, figure p { white-space: pre !important;   resize: none; }
-      fieldset { border: none; }
+      * { 
+        font-family: 'Fira Mono', monospace; 
+        font-size: 14px; color: antiquewhite 
+      }
+
+      body { 
+        background: #201818; padding: 1em; color: #aaa; max-width: 130ch; 
+        margin: auto; 
+      }
+
+      textarea, figure p { white-space: pre !important; resize: none; }
       h1,h2,h3,h4,h5 { font-weight: normal; font-size: 80%; color: #999; }
-      fieldset > * { display: block; }
+      fieldset { border:none; > * { display: block; }  }
       select { background: transparent; padding: 1em; border-radius: 4px; }
       label { font-size: 85%; color: #999; } 
       a { color: blanchedalmond; text-decoration: none;} 
-      body { background: #201818; padding: 1em; color: #aaa; max-width: 130ch; 
-        margin: auto; 
-      }
       
       @media screen and (max-width: 760px) {
         section, header, textarea, fieldset, section, #result p { 
           display: block !important;
           min-height: fit-content !important;
           width: -webkit-fill-available;
-
           background: transparent; padding: 0.5em 1em; border-radius: 4px;
           display: block; padding: 2em; margin: 0;
           justify-items: center;
         }
-        header > section { display: none !important; }
-        header { justify-items: center; padding: 1em; }
+        header { justify-items: center; 
+          padding: 1em; & > section { display: none !important; }
+        }
       }  
       
-
-      figure[haserror]  * { 
-        opacity: 1 !important;
-      }
-
       header {
         display: grid; grid-template-columns: repeat(2, 1fr); 
         align-content: baseline; align-items: center; justify-items: flex-end;
         section { 
           display: grid; width: -webkit-fill-available; 
           * { width: initial; } justify-content: flex-end;
-        }
-        section:first-child { justify-content: flex-start;  }
+        } section:first-child { justify-content: flex-start;  }
         * { margin: 0.5em 0; font-size: 90%; } 
       }
 
@@ -58,31 +58,26 @@
         margin: 0; padding: 0; height: -webkit-fill-available; font-size: 110%;
       }
 
+      figure[haserror]  * { opacity: 1 !important; }
       figure, textarea { 
-        display: grid;
-         position: relative;
-        height: -webkit-fill-available;
-        max-width: -webkit-fill-available; 
-        width: -webkit-fill-available;
-        min-height: 200px;  
-
-        padding: 3em; margin: 1em 0; white-space: pre !important;
-        border: 1px dashed #333; box-sizing: border-box; background: none; 
-        color: antiquewhite;
-        p { margin: 0; padding: 0; }
+        display: grid; position: relative; height: -webkit-fill-available;
+        max-width: -webkit-fill-available;  width: -webkit-fill-available;
+        min-height: 200px; padding: 3em; margin: 1em 0; white-space: pre !important;
+        border: 1px dashed #333; background: none;  color: antiquewhite; 
+        p { margin: 0; padding: 0; } 
         .error {
           opacity: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
           margin: auto; width: min-content; height: min-content; z-index: 10;
           pointer-events: none; color: #e25e5f; transition: opacity 0.5s;
           white-space: pre; font-size: 80%;
-        }    
+        }          
     </style>
   </head>
 
   <body>
     <header>
       <section>
-        <h3>sandbox</h3>
+        <h3>browser-verification sandbox</h3>
         <p><a href="https://github.com/nicholaswmin/flomaster">< back to project</a></p>
         </section>
         </section>
@@ -96,6 +91,7 @@
         </select>
       </fieldset>
     </header> 
+
     <main>
       <section>
         <fieldset>

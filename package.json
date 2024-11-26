@@ -6,7 +6,7 @@
   "exports": "./src/index.js",
   "browser": "./src/index.js",
   "scripts": {
-    "play": "npx http-server -o .github/docs/sandbox.html",
+    "demo": "npx http-server -o demo.html",
     "test": "node --test"
   },
   "repository": {

@@ -54,10 +54,10 @@ node --run test
 
 ## misc
 
-serve sandbox locally
+serve demo sandbox locally
 
 ```bash
-$ node --run play
+$ node --run demo
 ```
 
 deploy documentation
