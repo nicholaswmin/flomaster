@@ -38,6 +38,8 @@ Simply put: it's *faster*.
     - [ ] needs precedence fixes, i.e `forEach` is colored half
           for `for` and the rest separate.
 - [ ] start benchmarks asap, this is more than enough
+ - This is perfect: https://gist.github.com/addyosmani/c053f68aead473d7585b45c9e8dce31e
+ - what about other browsers
 - [ ] fix the online sandbox  
 - [x] a decent color mapper
 - [ ] add a small benchmark
