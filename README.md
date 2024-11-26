@@ -90,6 +90,6 @@ $ node --run demo
 [dom]: https://en.wikipedia.org/wiki/Document_Object_Model
 [rfl]: https://developer.mozilla.org/en-US/docs/Glossary/Reflow
 [bnk]: https://www.chromium.org/blink/
-[snd]: https://nicholaswmin.github.io/flomaster/sandbox
+[snd]: https://nicholaswmin.github.io/flomaster/demo.html
 [dcs]: https://nicholaswmin.github.io/flomaster
 [pdc]: https://github.com/nicholaswmin/flomaster/tree/main/.github/docs
