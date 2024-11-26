@@ -36,10 +36,11 @@ Simply put: it's *faster*.
     - [ ] fix/ensure errors are correctly printable in browser
     - [ ] many cases that need ironing-out. Fix the presets.
     - [ ] needs precedence fixes, i.e `forEach` is colored half
-          for `for` and the rest separate.  
+          for `for` and the rest separate.
+- [ ] fix the online sandbox  
 - [x] a decent color mapper
 - [ ] add a small benchmark
-  - [ ] decide on the parameters *before* you start
+    - decide on the parameters *before* you start
 - [ ] review if it makes sense
 
 ## test
