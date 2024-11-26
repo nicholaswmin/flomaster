@@ -60,10 +60,6 @@ serve demo sandbox locally
 $ node --run demo
 ```
 
-deploy documentation
-
-Read the [pages doc.][pdc]
-
 ## license
 
 > MIT License  
