@@ -204,7 +204,7 @@
     window.$$ = sel => Array.from(document.querySelectorAll(sel))
     </script>
 
-    <script type="module" >
+
     // - Editor Misc.s
     //-------------------
   <script type="module">
@@ -253,7 +253,7 @@
   
   window.presets = {
   'exponentiation': {
-    title: 'ES6 simple',
+    title: 'simple',
     code: `
   console.log(3 ** 4);
   
@@ -267,7 +267,7 @@
   // --- ES6 CLASS INHERITANCE ---
   'es6-class-inherit': {
     selected: true,
-    title: `ES6 Classes`,
+    title: `long`,
     code: `
   class Rectangle extends Shape {
     constructor(id, x, y, width, height) {
@@ -407,10 +407,10 @@
   var rect = new Rectangle(7, 42);
   rect.z = 1000;
   rect.color = 'red';
-  `},
+  `.repeat(10)},
   
-  'symbols': {
-    title: 'ES6 symbols',
+  'esoteric': {
+    title: 'esoteric',
     code: `
     // a fibonnacci sequencer
     let fibonacci = {
@@ -429,8 +429,9 @@
       }
     }
   `},
+
   'keywords': {
-    title: 'All tokens',
+    title: 'all tokens',
     code: `
     
   // a comment
