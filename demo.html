@@ -15,19 +15,18 @@
         font-family: 'Fira Mono', monospace; 
         font-size: 14px; color: antiquewhite 
       }
-
-      body { 
-        background: #201818; padding: 1em; color: #aaa; max-width: 130ch; 
-        margin: auto; 
-      }
-
-      textarea, figure p { white-space: pre !important; resize: none; }
-      h1,h2,h3,h4,h5 { font-weight: normal; font-size: 80%; color: #999; }
-      fieldset { border:none; > * { display: block; }  }
-      select { background: transparent; padding: 1em; border-radius: 4px; }
-      label { font-size: 85%; color: #999; } 
+        
+      body, header, footer {  background: #201818;  }
+      body { padding: 1em; color: #aaa; max-width: 130ch; margin: auto; }
       a { color: blanchedalmond; text-decoration: none;} 
-      
+      h1,h2,h3,h4,h5 { font-weight: normal; font-size: 80%; color: #999; }
+      label { font-size: 85%; color: #999; } 
+      fieldset { border:none; > * { display: block; }  }
+      textarea, figure p { white-space: pre !important; resize: none; 
+        line-height: 2; font-size: 12px; }
+      select {  min-width: 280px; background: transparent; padding: 1em; 
+        border-radius: 4px; }
+
       @media screen and (max-width: 760px) {
         section, header, textarea, fieldset, section, #result p { 
           display: block !important;
@@ -37,6 +36,7 @@
           display: block; padding: 2em; margin: 0;
           justify-items: center;
         }
+        main fieldset { margin-bottom: 4em; }
         header { justify-items: center; 
           padding: 1em; & > section { display: none !important; }
         }
@@ -49,21 +49,26 @@
           display: grid; width: -webkit-fill-available; 
           * { width: initial; } justify-content: flex-end;
         } section:first-child { justify-content: flex-start;  }
-        * { margin: 0.5em 0; font-size: 90%; } 
+        * { margin: 0.5em 0;  } 
       }
 
-      footer { color: #666; font-size: 85%; padding: 1em; }
-      main fieldset { border: 0; padding: 0; height: calc(90vh - 150px); }
+      footer { position: relative; color: #666; font-size: 90%; 
+        padding: 1em; margin-top: 2 em; }
+      main fieldset { border: 0; padding: 0; height: calc(90vh - 100px); }
       main section { display: grid; grid-template-columns: repeat(2, 1fr); 
         margin: 0; padding: 0; height: -webkit-fill-available; font-size: 110%;
       }
       figure[haserror]  p { visibility: hidden; }
       figure[haserror]  * { opacity: 1 !important; }
       figure, textarea { 
-        display: grid; position: relative; height: -webkit-fill-available;
+        display: block; position: relative; height: -webkit-fill-available;
         max-width: -webkit-fill-available;  width: -webkit-fill-available;
         min-height: 200px; padding: 3em; margin: 1em 0; white-space: pre !important;
         border: 1px dashed #333; background: none;  color: antiquewhite; 
+        overflow: scroll;
+        scrollbar-color: #333 #201818;
+        scrollbar-width: thin;
+        scrollbar-gutter: stable both-edges;;
         p { margin: 0; padding: 0; } 
         .error {
           opacity: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0;
@@ -82,12 +87,10 @@
         </section>
         </section>
         <fieldset>
-        <label for="presets">presets:</label>
-        <select name="presets" id="presets">
-          <option value="exponentiation" selected>Exponentiation</option>
-          <option value="es6-uni-regx">Unicode String & RegExp Literal</option>
-          <option value="es6-symbols">Symbols/Iterators</option>
-          <option value="es6-class-inherit">Class Inheritance</option>
+        <label for="pstbox">presets:</label>
+        <select id="pstbox">
+          <option selected disabled> --- Loading.. --- .</option>
+          <!-- Populated by script: "Populate Presets" -->
         </select>
       </fieldset>
     </header> 
@@ -95,27 +98,25 @@
     <main>
       <section>
         <fieldset>
-          <label for="editor">Source Code</label>
+          <label for="editor">Source</label>
           <textarea id="editor"
-            placeholder="enter source code ..."
-            oninput="run()"
-            language="js" 
-            tab-size="2" 
-            autofocus
-            spellcheck="false">
+            placeholder="enter Javascript code here ..."
+            spellcheck="false"
+            tab-size="2"
+            autofocus>
           </textarea> 
         </fieldset>
 
         <fieldset> 
           <label for="editor">Highlighted</label>
           <figure id="resbox">
-            <span id="result"></span>
             <div id="errors" class="error"></div>
           </figure>
         </fieldset>
       </section>
     </main>
     
+
     <footer>
       authors: @nicholaswmin, MIT License
       <br>
@@ -152,16 +153,16 @@
     }
   </style>
 
-  <!-- main highlighting  . -->
   <script type="module">
+  // - Main Higlighter
+  //-------------------
     import { highlight } from './src/index.js'
     
     const editor = $('#editor')
     const resbox = $('#resbox')
-    const result = $('#result')
-
-    window.run = () => {
-      const value = editor.value || '^'
+    
+    window.run = () => { 
+      const value = (editor.value || '^').trim()
       const paragraph = document.createElement('p')
       const text = document.createTextNode(value)
 
@@ -180,131 +181,384 @@
           CSS.highlights
             .set(element, new Highlight(...grammar[element].map(tokenToRange)))
       }) 
+      
+      const previous = $('#resbox p')
+      const resbox = $('#resbox')
 
       paragraph.appendChild(text)
-      result.replaceChildren(paragraph)
+
+      previous 
+        ? previous.replaceWith(paragraph) 
+        : resbox.prepend(paragraph)
 
       resbox.removeAttribute('haserror')
     }
     
-    window.addEventListener('DOMContentLoaded', () => setTimeout(run, 100))
+    editor.addEventListener('input', run)
   </script>
   
-  <!-- base utils. -->
   <script>
+    // - Base Utils.s
+    //-------------------
     window.$  = sel => document.querySelector(sel)
     window.$$ = sel => Array.from(document.querySelectorAll(sel))
-    HTMLElement
-  </script>
+    </script>
 
-  <!-- editor misc. -->
+    <script type="module" >
+    // - Editor Misc.s
+    //-------------------
   <script type="module">
     const editor = $('#editor')
     const resbox = $('#resbox')
-    const preset = $('#presets')
+    const preset = $('#pstbox')
     const errors = $('#errors')
-    window.addEventListener('load', e => {
+    window.addEventListener('DOMContentLoaded', e => {
       const showErr = ({ error }) => {
         resbox.setAttribute('haserror', '')
         errors.textContent = (error.cause || errors.value)?.trim()
       }
       
-      const loadps = e => {
-        editor.value = window.presets[e.currentTarget.value]
-        setTimeout(() => editor.dispatchEvent(new CustomEvent('input')), 50)
+      const syncscroll = target => ({ srcElement }) => 
+        target.scrollTop = srcElement.scrollTop
+      const loadps = ({ srcElement }) => {
+        editor.value = window.presets[srcElement.value].code.trim()
+        editor.dispatchEvent(new CustomEvent('input', { bubbles: true }))
       }
-      const backup = e => localStorage.setItem('editor', e.srcElement.value)
+      const trimWS   = e => editor.value = editor.value.trim().length === 0
+        ? editor.value.trim() : editor.value.trim()
       const tabkey = e => {
-        if (e.key !== 'Tab') return
-        const { value, selectionStart, selectionEnd } = e.srcElement;
-          const sub =`  ${value.substring(selectionEnd)}`
-          e.srcElement.value = `${value.substring(0, selectionEnd)}${sub}`
-          e.srcElement.selectionStart = e.srcElement.selectionEnd = selectionEnd + 1
-          e.preventDefault()
+        if (e.key !== 'Tab') 
+          return
+        
+        window.getSelection().collapseToStart()
+        document.execCommand('insertText', false, 
+          ' '.repeat(+e.srcElement.getAttribute('tab-size') || 2)
+        )
+        e.preventDefault()
       }
   
-      editor.addEventListener('input', backup)
       editor.addEventListener('keydown', tabkey)
-      editor.addEventListener('input', backup)
+      editor.addEventListener('focusout', trimWS)
+      editor.addEventListener('scroll', syncscroll(resbox))
       preset.addEventListener('change', loadps)
       window.addEventListener('error', showErr)
-      editor.value = localStorage.getItem('editor') || loadps({ 
-        currentTarget: { value: 'exponentiation' }
-      })
     })
   </script>
+
+  <script type="module" >
+  // - Define Presets
+  // - Populate Presets
+  // 
+    // note: do not indent
   
-  <-
-  <script>
-    window.presets = {
-      'exponentiation': `console.log(3 ** 4);
-// Expected output: 81
-
-console.log(10 ** -2);
-// Expected output: 0.01
-
-console.log(2 ** (3 ** 2));
-// Expected output: 512
-
-console.log((2 ** 3) ** 2);
-// Expected output: 64`,
-      'es6-class-inherit': `class Rectangle extends Shape {
-  constructor(id, x, y, width, height) {
-    super(id, x, y);
-    this.width = width;
-    this.height = height;
+  window.presets = {
+  'exponentiation': {
+    title: 'ES6 simple',
+    code: `
+  console.log(3 ** 4);
+  
+  console.log(10 ** -2);
+  
+  console.log(2 ** (3 ** 2));
+  
+  console.log((2 ** 3) ** 2);`
+  },
+  
+  // --- ES6 CLASS INHERITANCE ---
+  'es6-class-inherit': {
+    selected: true,
+    title: `ES6 Classes`,
+    code: `
+  class Rectangle extends Shape {
+    constructor(id, x, y, width, height) {
+      super(id, x, y);
+        this.width = width;
+        this.height = height;
+      }
+  
+    getSize() {
+      return {
+        width: this.width,
+        height: this.height
+      };
+    }
   }
-  getSize() {
-    return {
-      width: this.width,
-      height: this.height
-    };
+  
+  class Circle extends Shape {
+    constructor(id, x, y, radius) {
+      super(id, x, y);
+      this.radius = radius;
+    }
   }
-}
-
-class Circle extends Shape {
-  constructor(id, x, y, radius) {
-    super(id, x, y);
-    this.radius = radius;
+  
+  var aggregation = (baseClass, ...mixins) => {
+  let base = class _Combined extends baseClass {
+    constructor(...args) {
+      super(...args);
+      mixins.forEach((mixin) => {
+        mixin.prototype.initializer.call(this);
+      });
+    }
+  };
+  
+  let copyProps = (target, source) => {
+    Object.getOwnPropertyNames(source)
+      .concat(Object.getOwnPropertySymbols(source))
+      .forEach((prop) => {
+        // missing implementation
+      })
   }
-}
-
-let rectangle = new Rectangle(2, 11, 21, 100, 200);
-console.log('Rectangle size:', JSON.stringify(rectangle.getSize()));
-
-let circle = new Circle(2, 80, 90, 50);
-console.log('Circle pos:, JSON.stringify(circle.getPos()));
-Result
-Rectangle size: {"width":100,"height":200}
-Circle pos: {"x":80,"y":90}      
-`,
-'es6-uni-regx': `console.log('Compare "𠮷".length === 2:', "𠮷".length === 2);
-console.log('zompare "𠮷".match(/./u)[0].length === 2:', "𠮷".match(/./u)[0].length === 2);
-console.log('Compare "𠮷" === "\\uD842\\uDFB7":, "𠮷" === "\uD842\uDFB7");
-console.log('Compare "𠮷" === "\\u{20BB7}":', "𠮷" === "\u{20BB7}");
-console.log('Compare "𠮷".codePointAt(0) == 0x20BB7:', "𠮷".codePointAt(0) == 0x20BB7);
-for (let codepoint of "𠮷") console.log('Value codepoint:', codepoint);',
-'Symbols': ''es6-uni-regex': 'console.log('Compare "𠮷".length === 2:', "𠮷".length === 2);
-console.log('zompare "𠮷".match(/./u)[0].length === 2:', "𠮷".match(/./u)[0].length === 2);
-console.log('Compare "𠮷" === "\\uD842\\uDFB7":, "𠮷" === "\uD842\uDFB7");
-console.log('Compare "𠮷" === "\\u{20BB7}":', "𠮷" === "\u{20BB7}");
-console.log('Compare "𠮷".codePointAt(0) == 0x20BB7:', "𠮷".codePointAt(0) == 0x20BB7);
-for (let codepoint of "𠮷") console.log('Value codepoint:', codepoint)`,
-  'es6-symbols': `let fibonacci = {
-  [Symbol.iterator]() {
-    let pre = 0,
-      cur = 1;
-    return {
-      next() {
-        [pre, cur] = [cur, pre + cur];
+  
+  mixins.forEach((mixin) => {
+    copyProps(base.prototype, mixin.prototype);
+    copyProps(base, mixin);
+  });
+  
+  return base;
+  };
+  
+  class Colored {
+    initializer() {
+      this._color = 'white';
+    }
+  
+    get color() {
+      return this._color;
+    }
+  
+    set color(v) {
+      this._color = v;
+    }
+  }
+  
+  class ZCoord {
+    initializer() {
+      this._z = 0;
+    }
+    get z() {
+      return this._z;
+    }
+    set z(v) {
+      this._z = v;
+    }
+  }
+    
+  class Shape {
+    constructor(x, y) {
+      this._x = x;
+      this._y = y;
+    }
+  
+    get x() {
+      return this._x;
+    }
+    
+    set x(v) {
+      this._x = v;
+    }
+  
+    get y() {
+      return this._y;
+    }
+  
+    set y(v) {
+      this._y = v;
+    }
+  }
+  
+  class Shape {
+    constructor(id, x, y) {
+      this.id = id;
+      this.x = x;
+      this.y = y;
+    }
+    toString() {
+      // mising impl.
+    }
+  }
+  class Rectangle extends Shape {
+    constructor(id, x, y, width, height) {
+      super(id, x, y);
+    }
+    toString() {
+      // mising impl.
+    }
+  }
+  class Circle extends Shape {
+    constructor(id, x, y, radius) {
+      super(id, x, y);
+    }
+    toString() {
+      // mising impl.
+    }
+  }
+  
+  let shape = new Shape(1, 10, 20);
+  console.log(shape.toString());
+  let rectangle = new Rectangle(2, 20, 30);
+  console.log(rectangle.toString());
+  let circle = new Circle(3, 30, 40);
+  console.log(circle.toString());
+  
+  class Rectangle extends aggregation(
+    Shape, Colored, ZCoord
+  ) {}
+  
+  var rect = new Rectangle(7, 42);
+  rect.z = 1000;
+  rect.color = 'red';
+  `},
+  
+  'symbols': {
+    title: 'ES6 symbols',
+    code: `
+    // a fibonnacci sequencer
+    let fibonacci = {
+      [Symbol.iterator]() {
+        let pre = 0,
+          cur = 1;
         return {
-          done: false,
-          value: cur
+          next() {
+            [pre, cur] = [cur, pre + cur];
+            return {
+              done: false,
+              value: cur
+            };
+          }
         };
       }
-    };
-  }
-}'`
     }
+  `},
+  'keywords': {
+    title: 'All tokens',
+    code: `
+    
+  // a comment
+  
+  var foo = 'bar'
+  
+  let foo = 'bar'
+  
+  const = foo = 'bar'
+  
+  if (foo === 'bar')
+  
+  else
+  
+  for (let i = 0; i < arr.length; i++)
+    console.log('look ma no brackets')
+  
+  console.log()
+  
+  break
+  
+  continue
+  
+  const lambda = x => x ** x
+  
+  const foo = function foo() {
+  
+  }
+  
+  1 + 2 + 3 + (5 ** 5) 
+  
+  let { foo, bar } = target  
+  
+  class Foo extends Bar {
+    get hello() {
+      return 'world'
+    }  
+  
+    set bonjour {
+      return \`template literal \`
+    }
+  
+    constructor() {
+      this.foo = 'bar'
+    }
+    
+  }
+  
+  }
+  
+  14 & 9
+  14 & 9
+  a &= 3
+  const b = -3
+  const all = [new Foo(), new Bar()]
+  
+  1234567890
+  'String Literal'
+  case
+  catch
+  char
+  class
+  const
+  continue
+  debugger
+  default
+  delete
+  do
+  double
+  else
+  enum
+  export
+  extends
+  final
+  finally
+  float
+  for
+  function
+  goto
+  if
+  implements
+  import
+  in
+  instanceof
+  int
+  interface
+  long
+  native
+  new
+  package
+  private
+  protected
+  public
+  return
+  short
+  static
+  super
+  switch
+  synchronized
+  this
+  throw
+  throws
+  transient
+  try
+  typeof
+  var
+  void
+  volatile
+  while
+  with
+    `}
+  }
+    window.addEventListener('load', () => {
+      const pstbox = $('#pstbox')
+      const pholder = $('#pstbox option')
+      const options = Object.entries(presets)
+        .map(([value, { title, code, selected }]) => {
+          const o = (document.createElement('option'))
+  
+          o.value = value.trim()
+          o.textContent = `${title} - ${code.split('\n').length} lines`
+          selected && selected === true ? o.setAttribute('selected', '') : null
+        
+            return o
+        })
+  
+      pholder.replaceWith(...options)
+      pstbox.dispatchEvent(new Event('change', { bubbles: true }))
+    })
   </script>
 </html>
